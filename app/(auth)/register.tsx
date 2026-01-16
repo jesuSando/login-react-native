@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
-import { Pressable, Text, View } from 'react-native';
+import { Alert, Pressable, Text, View } from 'react-native';
 import Field from '../../components/field';
-import { saveSession, saveUser } from '../../services/auth.service';
+import { useAuth } from '../../contexts/auth.context'; // Importa el contexto
+import { saveUser } from '../../services/auth.service';
 
 type FormData = {
     email: string;
@@ -11,11 +12,13 @@ type FormData = {
 };
 
 export default function Register() {
+    const { login } = useAuth(); // Usa el hook de autenticación
+
     const {
         control,
         handleSubmit,
         watch,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<FormData>({
         defaultValues: {
             email: '',
@@ -27,20 +30,31 @@ export default function Register() {
     const password = watch('password');
 
     async function onSubmit(data: FormData) {
-        const user = {
-            email: data.email,
-            password: data.password,
-        };
+        try {
+            const user = {
+                email: data.email,
+                password: data.password,
+                id: Date.now().toString(), // Agrega un ID único
+                createdAt: new Date().toISOString(),
+            };
 
-        await saveUser(user);
-        await saveSession();
+            await saveUser(user);
 
-        router.replace('/(app)/dashboard');
+            await login(user);
+
+            router.replace('/dashboard');
+
+        } catch (error) {
+            console.error('Error en registro:', error);
+            Alert.alert('Error', 'No se pudo completar el registro');
+        }
     }
 
     return (
-        <View style={{ padding: 20 }}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Registro</Text>
+        <View style={{ padding: 20, flex: 1, justifyContent: 'center' }}>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 30, textAlign: 'center' }}>
+                Registro
+            </Text>
 
             <Controller
                 control={control}
@@ -108,15 +122,26 @@ export default function Register() {
 
             <Pressable
                 onPress={handleSubmit(onSubmit)}
-                style={{
-                    backgroundColor: '#2196f3',
+                disabled={isSubmitting}
+                style={({ pressed }) => ({
+                    backgroundColor: pressed ? '#1976d2' : '#2196f3',
                     padding: 14,
                     borderRadius: 10,
-                    marginTop: 20,
-                }}
+                    marginTop: 30,
+                    opacity: isSubmitting ? 0.6 : 1,
+                })}
             >
-                <Text style={{ color: '#fff', textAlign: 'center' }}>
-                    Registrarse
+                <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>
+                    {isSubmitting ? 'Registrando...' : 'Registrarse'}
+                </Text>
+            </Pressable>
+
+            <Pressable
+                onPress={() => router.push('/login')}
+                style={{ marginTop: 20 }}
+            >
+                <Text style={{ color: '#2196f3', textAlign: 'center' }}>
+                    ¿Ya tienes cuenta? Inicia sesión
                 </Text>
             </Pressable>
         </View>
