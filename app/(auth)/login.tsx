@@ -113,7 +113,7 @@ export default function Login() {
             </Pressable>
 
             <Pressable
-                onPress={() => router.push('/(auth)/register')}
+                onPress={() => router.push('/register')}
                 style={{ marginTop: 20 }}
             >
                 <Text style={{ color: '#2196f3', textAlign: 'center' }}>
