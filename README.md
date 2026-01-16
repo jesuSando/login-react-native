@@ -48,3 +48,27 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+```
+EXPLORER
+TEST-EXPO/
+├── app/
+│   ├── (auth)/              # Grupo de autenticación
+│   │   └── index.tsx        # Pantalla unificada login/register
+│   ├── (app)/               # Grupo protegido (requiere auth)
+│   │   ├── _layout.tsx      # Layout protegido
+│   │   └── dashboard.tsx    # Dashboard (requiere login)
+│   ├── _layout.tsx          # Layout raíz
+│   └── index.tsx            # Redirección inicial
+├── components/
+│   ├── auth/
+│   │   ├── LoginForm.tsx    # Formulario de login
+│   │   └── RegisterForm.tsx # Formulario de registro
+│   └── field.tsx            # Campo reutilizable
+├── contexts/
+│   └── auth.context.tsx     # Contexto de autenticación
+├── services/
+│   └── auth.service.ts      # Servicios de autenticación
+└── interfaces/
+    └── user.interface.ts    # Tipos de usuario
+    ```

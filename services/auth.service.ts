@@ -4,24 +4,45 @@ const USER_KEY = 'user';
 const SESSION_KEY = 'session';
 
 export async function saveUser(user: any) {
-  await AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
+  try {
+    await AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
+  } catch (error) {
+    console.error('Error saving user:', error);
+  }
 }
 
 export async function getUser() {
-  const data = await AsyncStorage.getItem(USER_KEY);
-  return data ? JSON.parse(data) : null;
+  try {
+    const data = await AsyncStorage.getItem(USER_KEY);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error getting user:', error);
+    return null;
+  }
 }
 
 export async function saveSession() {
-  await AsyncStorage.setItem(SESSION_KEY, 'true');
+  try {
+    await AsyncStorage.setItem(SESSION_KEY, 'true');
+  } catch (error) {
+    console.error('Error saving session:', error);
+  }
 }
 
 export async function getSession() {
-  const session = await AsyncStorage.getItem(SESSION_KEY);
-  return session === 'true';
+  try {
+    const session = await AsyncStorage.getItem(SESSION_KEY);
+    return session === 'true';
+  } catch (error) {
+    console.error('Error getting session:', error);
+    return false;
+  }
 }
 
 export async function clearSession() {
-  await AsyncStorage.removeItem(SESSION_KEY);
-  await AsyncStorage.removeItem(USER_KEY);
+  try {
+    await AsyncStorage.removeItem(SESSION_KEY);
+  } catch (error) {
+    console.error('Error clearing session:', error);
+  }
 }

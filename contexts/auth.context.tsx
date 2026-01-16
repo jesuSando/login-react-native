@@ -1,12 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { User } from '../interfaces/user.interface';
 import { clearSession, getSession, getUser, saveSession, saveUser } from '../services/auth.service';
-
-type User = any;
 
 type AuthContextType = {
     isAuthenticated: boolean;
     user: User | null;
-    login: (userData?: User) => Promise<void>;
+    login: (userData: User) => Promise<void>;
     logout: () => Promise<void>;
     loading: boolean;
 };
@@ -37,13 +36,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-    async function login(userData?: User) {
+    async function login(userData: User) {
         await saveSession();
-        if (userData) {
-            await saveUser(userData);
-            setUser(userData);
-        }
+        await saveUser(userData);
         setIsAuthenticated(true);
+        setUser(userData);
     }
 
     async function logout() {
@@ -65,6 +62,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 }
 
-export function useAuth() {
-    return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);
