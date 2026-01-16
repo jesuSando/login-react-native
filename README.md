@@ -71,4 +71,4 @@ TEST-EXPO/
 │   └── auth.service.ts      # Servicios de autenticación
 └── interfaces/
     └── user.interface.ts    # Tipos de usuario
-    ```
+```
