@@ -1,4 +1,3 @@
-// auth.service.ts (versión simplificada)
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const USER_KEY = 'user';
@@ -24,4 +23,5 @@ export async function getSession() {
 
 export async function clearSession() {
   await AsyncStorage.removeItem(SESSION_KEY);
+  await AsyncStorage.removeItem(USER_KEY);
 }
