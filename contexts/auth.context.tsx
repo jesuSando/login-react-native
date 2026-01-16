@@ -1,8 +1,7 @@
-// auth.context.tsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import { clearSession, getSession, getUser, saveSession, saveUser } from '../services/auth.service';
 
-type User = any; // Define tu tipo de usuario aquí
+type User = any;
 
 type AuthContextType = {
     isAuthenticated: boolean;
