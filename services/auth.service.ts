@@ -1,7 +1,77 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from '../interfaces/user.interface';
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const USER_KEY = 'user';
-const SESSION_KEY = 'session';
+const TOKEN_KEY = 'token';
+
+async function apiRequest(endpoint: string, options: RequestInit = {}) {
+  const url = `${API_URL}${endpoint}`;
+
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Error en la petición');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('API Request Error:', error);
+    throw error;
+  }
+}
+
+export async function register(name: string, email: string, password: string): Promise<any> {
+  try {
+    const response = await apiRequest('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password }),
+    });
+    return response;
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
+}
+
+export async function login(email: string, password: string): Promise<any> {
+  try {
+    const response = await apiRequest('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.token) {
+      await AsyncStorage.setItem(TOKEN_KEY, response.token);
+    }
+
+    return response;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
+}
+
+export async function logout(): Promise<void> {
+  try {
+    await AsyncStorage.removeItem(TOKEN_KEY);
+    await AsyncStorage.removeItem(USER_KEY);
+  } catch (error) {
+    console.error('Logout error:', error);
+    throw error;
+  }
+}
 
 export async function saveUser(user: any) {
   try {
@@ -11,7 +81,7 @@ export async function saveUser(user: any) {
   }
 }
 
-export async function getUser() {
+export async function getUser(): Promise<User | null> {
   try {
     const data = await AsyncStorage.getItem(USER_KEY);
     return data ? JSON.parse(data) : null;
@@ -21,28 +91,21 @@ export async function getUser() {
   }
 }
 
-export async function saveSession() {
+export async function getToken(): Promise<string | null> {
   try {
-    await AsyncStorage.setItem(SESSION_KEY, 'true');
+    return await AsyncStorage.getItem(TOKEN_KEY);
   } catch (error) {
-    console.error('Error saving session:', error);
+    console.error('Error getting token:', error);
+    return null;
   }
 }
 
-export async function getSession() {
+export async function verifySession(): Promise<boolean> {
   try {
-    const session = await AsyncStorage.getItem(SESSION_KEY);
-    return session === 'true';
+    const token = await getToken();
+    const user = await getUser();
+    return !!(token && user);
   } catch (error) {
-    console.error('Error getting session:', error);
     return false;
-  }
-}
-
-export async function clearSession() {
-  try {
-    await AsyncStorage.removeItem(SESSION_KEY);
-  } catch (error) {
-    console.error('Error clearing session:', error);
   }
 }

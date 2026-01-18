@@ -1,4 +1,4 @@
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react-native';
 import { useState } from 'react';
 import {
     Pressable,

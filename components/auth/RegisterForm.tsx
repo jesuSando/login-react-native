@@ -1,8 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient"
 import { Controller, useForm } from "react-hook-form"
-import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native"
 import { useAuth } from "../../contexts/auth.context"
-import { saveUser } from "../../services/auth.service"
 import Field from "../field"
 
 type FormData = {
@@ -28,7 +27,7 @@ const COLORS = {
 }
 
 export default function RegisterForm({ onToggleAuth, loading, setLoading }: RegisterFormProps) {
-  const { login } = useAuth()
+  const { register: authRegister } = useAuth();
 
   const {
     control,
@@ -46,24 +45,12 @@ export default function RegisterForm({ onToggleAuth, loading, setLoading }: Regi
   const password = watch("password")
 
   const onSubmit = async (data: FormData) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const user = {
-        email: data.email,
-        password: data.password,
-        id: Date.now().toString(),
-        createdAt: new Date().toISOString(),
-      }
-
-      await saveUser(user)
-      await login(user)
-
-      Alert.alert("Éxito", "Cuenta creada exitosamente")
+      await authRegister(data.email.split('@')[0], data.email, data.password);
     } catch (error) {
-      console.error("Error en registro:", error)
-      Alert.alert("Error", "No se pudo crear la cuenta")
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -170,7 +157,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: COLORS.textPrimary,
+    color: "#7870e6",
     marginBottom: 8,
   },
   subtitle: {

@@ -1,8 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient"
 import { Controller, useForm } from "react-hook-form"
-import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native"
 import { useAuth } from "../../contexts/auth.context"
-import { getUser } from "../../services/auth.service"
 import Field from "../field"
 
 type FormData = {
@@ -27,7 +26,7 @@ const COLORS = {
 }
 
 export default function LoginForm({ onToggleAuth, loading, setLoading }: LoginFormProps) {
-  const { login } = useAuth()
+  const { login: authLogin } = useAuth()
 
   const {
     control,
@@ -41,21 +40,12 @@ export default function LoginForm({ onToggleAuth, loading, setLoading }: LoginFo
   })
 
   const onSubmit = async (data: FormData) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const savedUser = await getUser()
-
-      if (savedUser && savedUser.email === data.email && savedUser.password === data.password) {
-        await login(savedUser)
-        Alert.alert("Éxito", "Inicio de sesión exitoso")
-      } else {
-        Alert.alert("Error", "Credenciales incorrectas")
-      }
+      await authLogin(data.email, data.password);
     } catch (error) {
-      console.error("Error en login:", error)
-      Alert.alert("Error", "No se pudo iniciar sesión")
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -142,7 +132,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: COLORS.textPrimary,
+    color: "#7870e6",
     marginBottom: 8,
   },
   subtitle: {

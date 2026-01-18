@@ -2,6 +2,7 @@
 
 import { LinearGradient } from "expo-linear-gradient"
 import { router } from "expo-router"
+import { CalendarDays, ChartNoAxesCombined, Lock, RefreshCcw, TrendingUp, Zap } from "lucide-react-native"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Platform, StyleSheet, Text, useWindowDimensions, View } from "react-native"
 import LoginForm from "../../components/auth/LoginForm"
@@ -73,8 +74,8 @@ export default function AuthScreen() {
 
           <View style={styles.featureList}>
             <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "rgba(120, 112, 230, 0.25)" }]}>
-                <Text style={styles.featureEmoji}>📊</Text>
+              <View style={styles.featureIcon}>
+                <ChartNoAxesCombined size={20} color="#ffffff" />
               </View>
               <View style={styles.featureTextContainer}>
                 <Text style={styles.featureTitle}>Seguimiento de Hábitos</Text>
@@ -83,8 +84,8 @@ export default function AuthScreen() {
             </View>
 
             <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "rgba(176, 110, 204, 0.25)" }]}>
-                <Text style={styles.featureEmoji}>📅</Text>
+              <View style={styles.featureIcon}>
+                <CalendarDays size={20} color="#ffffff" />
               </View>
               <View style={styles.featureTextContainer}>
                 <Text style={styles.featureTitle}>Planner Semanal</Text>
@@ -93,8 +94,8 @@ export default function AuthScreen() {
             </View>
 
             <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "rgba(255, 117, 136, 0.25)" }]}>
-                <Text style={styles.featureEmoji}>📈</Text>
+              <View style={styles.featureIcon}>
+                <TrendingUp size={20} color="#ffffff" />
               </View>
               <View style={styles.featureTextContainer}>
                 <Text style={styles.featureTitle}>Métricas Personales</Text>
@@ -112,8 +113,8 @@ export default function AuthScreen() {
 
           <View style={styles.featureList}>
             <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "rgba(255, 150, 115, 0.25)" }]}>
-                <Text style={styles.featureEmoji}>⚡</Text>
+              <View style={styles.featureIcon}>
+                <Zap size={20} color="#ffffff" />
               </View>
               <View style={styles.featureTextContainer}>
                 <Text style={styles.featureTitle}>Control Total</Text>
@@ -122,8 +123,8 @@ export default function AuthScreen() {
             </View>
 
             <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "rgba(177, 111, 204, 0.25)" }]}>
-                <Text style={styles.featureEmoji}>🔄</Text>
+              <View style={styles.featureIcon}>
+                <RefreshCcw size={20} color="#ffffff" />
               </View>
               <View style={styles.featureTextContainer}>
                 <Text style={styles.featureTitle}>Acceso Rápido</Text>
@@ -132,8 +133,8 @@ export default function AuthScreen() {
             </View>
 
             <View style={styles.featureItem}>
-              <View style={[styles.featureIcon, { backgroundColor: "rgba(120, 112, 230, 0.25)" }]}>
-                <Text style={styles.featureEmoji}>🔒</Text>
+              <View style={styles.featureIcon}>
+                <Lock size={20} color="#ffffff" />
               </View>
               <View style={styles.featureTextContainer}>
                 <Text style={styles.featureTitle}>100% Privado</Text>
@@ -332,7 +333,7 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 42,
     fontWeight: "bold",
-    color: "#7870e6",
+    color: "#ffffff",
     marginBottom: 16,
     textShadowColor: "rgba(0, 0, 0, 0.15)",
     textShadowOffset: { width: 0, height: 2 },
@@ -353,8 +354,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   featureIcon: {
-    width: 44,
-    height: 44,
+    padding: 10,
     borderRadius: 22,
     justifyContent: "center",
     alignItems: "center",
@@ -362,7 +362,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255, 255, 255, 0.2)",
   },
   featureEmoji: {
-    fontSize: 20,
+    height: 20,
+    width: 20
   },
   featureTextContainer: {
     flex: 1,
@@ -370,7 +371,7 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 15,
     fontWeight: "600",
-    color: "#7870e6",
+    color: "#ffffff",
     marginBottom: 2,
   },
   featureDesc: {
@@ -384,7 +385,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    backgroundColor: "#ffffff",
   },
   formContentContainer: {
     width: "100%",
@@ -399,7 +400,7 @@ const styles = StyleSheet.create({
   mobileFormCard: {
     width: "100%",
     maxWidth: 400,
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    backgroundColor: "#ffffff",
     borderRadius: 24,
     padding: 24,
     shadowColor: "#000",
