@@ -1,5 +1,5 @@
 import { Eye, EyeOff } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
     Pressable,
     Text,
@@ -19,6 +19,7 @@ interface FieldProps extends TextInputProps {
 export default function Field({ label, type, error, value, onChangeText, onBlur, ...rest }: FieldProps) {
     const [focused, setFocused] = useState(false);
     const [show, setShow] = useState(false);
+    const inputRef = useRef<TextInput>(null);
 
     const isFloating = focused || Boolean(value);
 
@@ -41,6 +42,7 @@ export default function Field({ label, type, error, value, onChangeText, onBlur,
     return (
         <View style={{ marginTop: 24 }}>
             <Text
+                pointerEvents="none"
                 style={{
                     position: 'absolute',
                     left: isFloating ? 0 : 12,
@@ -57,6 +59,7 @@ export default function Field({ label, type, error, value, onChangeText, onBlur,
             </Text>
 
             <TextInput
+                ref={inputRef}
                 {...inputProps}
                 {...rest}
                 value={value}
@@ -82,8 +85,12 @@ export default function Field({ label, type, error, value, onChangeText, onBlur,
 
             {type === 'password' && (
                 <Pressable
-                    focusable={false}
-                    onPress={() => setShow(prev => !prev)}
+                    onPress={() => {
+                        setShow(prev => !prev);
+                        requestAnimationFrame(() => {
+                            inputRef.current?.focus();
+                        });
+                    }}
                     style={{
                         position: 'absolute',
                         right: 12,
@@ -92,6 +99,7 @@ export default function Field({ label, type, error, value, onChangeText, onBlur,
                         height: 20,
                     }}
                 >
+
                     {show ? (
                         <EyeOff
                             width={20}
