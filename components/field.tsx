@@ -49,7 +49,7 @@ export default function Field({ label, type, error, value, onChangeText, onBlur,
                     color: error
                         ? '#e53935'
                         : focused
-                            ? '#2196f3'
+                            ? '#ff7588'
                             : '#555',
                 }}
             >
@@ -75,7 +75,7 @@ export default function Field({ label, type, error, value, onChangeText, onBlur,
                     borderColor: error
                         ? '#e53935'
                         : focused
-                            ? '#2196f3'
+                            ? '#ff7588'
                             : '#ccc',
                 }}
             />
@@ -92,7 +92,31 @@ export default function Field({ label, type, error, value, onChangeText, onBlur,
                         height: 20,
                     }}
                 >
-                    {show ? <EyeOff width={20} height={20} /> : <Eye width={20} height={20} />}
+                    {show ? (
+                        <EyeOff
+                            width={20}
+                            height={20}
+                            color={
+                                error
+                                    ? '#e53935'
+                                    : focused
+                                        ? '#ff7588'
+                                        : '#ccc'
+                            }
+                        />
+                    ) : (
+                        <Eye
+                            width={20}
+                            height={20}
+                            color={
+                                error
+                                    ? '#e53935'
+                                    : focused
+                                        ? '#ff7588'
+                                        : '#ccc'
+                            }
+                        />
+                    )}
                 </Pressable>
             )}
 

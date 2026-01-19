@@ -1,7 +1,8 @@
 import { LinearGradient } from "expo-linear-gradient"
 import { Controller, useForm } from "react-hook-form"
-import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native"
 import { useAuth } from "../../contexts/auth.context"
+import { useNotification } from '../../contexts/notification.context'
 import { getUser } from "../../services/auth.service"
 import Field from "../field"
 
@@ -28,6 +29,7 @@ const COLORS = {
 
 export default function LoginForm({ onToggleAuth, loading, setLoading }: LoginFormProps) {
   const { login } = useAuth()
+  const { showSuccess, showError } = useNotification();
 
   const {
     control,
@@ -41,23 +43,23 @@ export default function LoginForm({ onToggleAuth, loading, setLoading }: LoginFo
   })
 
   const onSubmit = async (data: FormData) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const savedUser = await getUser()
+      const savedUser = await getUser();
 
       if (savedUser && savedUser.email === data.email && savedUser.password === data.password) {
-        await login(savedUser)
-        Alert.alert("Éxito", "Inicio de sesión exitoso")
+        await login(savedUser);
+        showSuccess('Éxito', 'Inicio de sesión exitoso'); // Cambia esto
       } else {
-        Alert.alert("Error", "Credenciales incorrectas")
+        showError('Error', 'Credenciales incorrectas'); // Cambia esto
       }
     } catch (error) {
-      console.error("Error en login:", error)
-      Alert.alert("Error", "No se pudo iniciar sesión")
+      console.error('Error en login:', error);
+      showError('Error', 'No se pudo iniciar sesión'); // Cambia esto
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>

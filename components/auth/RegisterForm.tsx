@@ -1,7 +1,8 @@
 import { LinearGradient } from "expo-linear-gradient"
 import { Controller, useForm } from "react-hook-form"
-import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native"
 import { useAuth } from "../../contexts/auth.context"
+import { useNotification } from '../../contexts/notification.context'
 import { saveUser } from "../../services/auth.service"
 import Field from "../field"
 
@@ -29,6 +30,7 @@ const COLORS = {
 
 export default function RegisterForm({ onToggleAuth, loading, setLoading }: RegisterFormProps) {
   const { login } = useAuth()
+  const { showSuccess, showError } = useNotification();
 
   const {
     control,
@@ -46,26 +48,26 @@ export default function RegisterForm({ onToggleAuth, loading, setLoading }: Regi
   const password = watch("password")
 
   const onSubmit = async (data: FormData) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const user = {
         email: data.email,
         password: data.password,
         id: Date.now().toString(),
         createdAt: new Date().toISOString(),
-      }
+      };
 
-      await saveUser(user)
-      await login(user)
+      await saveUser(user);
+      await login(user);
 
-      Alert.alert("Éxito", "Cuenta creada exitosamente")
+      showSuccess('Éxito', 'Cuenta creada exitosamente'); // Cambia esto
     } catch (error) {
-      console.error("Error en registro:", error)
-      Alert.alert("Error", "No se pudo crear la cuenta")
+      console.error('Error en registro:', error);
+      showError('Error', 'No se pudo crear la cuenta'); // Cambia esto
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -176,6 +178,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: COLORS.textSecondary,
+    marginBottom: 32,
   },
   buttonContainer: {
     marginTop: 24,
