@@ -84,9 +84,15 @@ export default function Field({ label, type, error, value, onChangeText, onBlur,
                 <Pressable
                     focusable={false}
                     onPress={() => setShow(prev => !prev)}
-                    style={{ position: 'absolute', right: 12, top: 14 }}
+                    style={{
+                        position: 'absolute',
+                        right: 12,
+                        top: '50%',
+                        transform: [{ translateY: -10 }],
+                        height: 20,
+                    }}
                 >
-                    {show ? <EyeOff width={20} /> : <Eye width={20} />}
+                    {show ? <EyeOff width={20} height={20} /> : <Eye width={20} height={20} />}
                 </Pressable>
             )}
 

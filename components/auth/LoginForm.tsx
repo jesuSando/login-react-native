@@ -142,13 +142,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: COLORS.textPrimary,
+    color: "#7870e6",
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
     color: COLORS.textSecondary,
-    marginBottom: 32,
   },
   buttonContainer: {
     marginTop: 24,
